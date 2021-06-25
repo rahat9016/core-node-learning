@@ -28,8 +28,31 @@ handler._users.post = (requestProperties, callback)=>{
     //condition check 
     if(firstName && lastName && phone && password && tosAgreement){
         //make sure that the user doesn't already exists
-         callback(200,{
-             message:'user created condition'
+         data.read('users', phone, (err1)=>{
+            if(err1){
+                const userObject = {
+                    firstName,
+                    lastName,
+                    phone,
+                    password: hash(password),
+                    tosAgreement
+                }
+                data.create('users', phone, userObject, (err2)=>{
+                    if(!err2){
+                        callback(200,{
+                            message:' User created successfully'
+                        })
+                    }else{
+                        callback(500,{
+                            error: 'could not create user!'
+                        })
+                    }
+                })
+            }else{
+                callback(500,{
+                    error:"there was a problem in your sever side"
+                })
+            }
          })
     }else{
         callback(400,{
