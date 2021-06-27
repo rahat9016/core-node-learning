@@ -38,9 +38,9 @@ handle.handleReqRes = (req,res)=>{
             res.setHeader('Content-Type', 'application/json');
             res.writeHead(statusCode)
             res.write(payloadString)
-            
+            res.end(``)
         })
-        res.end(``)
+        
     })
 }
-module.exports = handle
+module.exports = handle 
