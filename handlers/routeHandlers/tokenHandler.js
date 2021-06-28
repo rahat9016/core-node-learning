@@ -96,16 +96,16 @@ handler._token.get = (requestProperties, callback) => {
 //PUT
 handler._token.put = (requestProperties, callback) => {
   const id =
-    typeof requestProperties.queryStringObject.id === "string" &&
-    requestProperties.queryStringObject.id.trim().length === 20 ?
-    requestProperties.queryStringObject.id :
+    typeof requestProperties.body.id === "string" &&
+    requestProperties.body.id.trim().length === 20 ?
+    requestProperties.body.id :
     false;
   const extend =
-    typeof requestProperties.queryStringObject.extend === "boolean" &&
-    requestProperties.queryStringObject.extend === true ?
+    typeof requestProperties.body.extend === "boolean" &&
+    requestProperties.body.extend === true ?
     true :
     false;
-  console.log(id, extend);
+ 
   if (id && extend) {
     data.read("tokens", id, (err, tokenData) => {
       
@@ -135,6 +135,55 @@ handler._token.put = (requestProperties, callback) => {
     });
   }
 };
-handler._token.delete = (requestProperties, callback) => {};
+handler._token.delete = (requestProperties, callback) => {
+  const id =
+    typeof requestProperties.queryStringObject.id === "string" &&
+    requestProperties.queryStringObject.id.trim().length === 20
+      ? requestProperties.queryStringObject.id
+      : false;
+  if (id) {
+    data.read("tokens", id, (err, tokenData) => {
+      if (!err && tokenData) {
+        data.delete("tokens", id, (err) => {
+          if (!err) {
+            callback(200, {
+              message: "Token deleted Successfully",
+            });
+          } else {
+            callback(500, {
+              error: "There was a server side problem",
+            });
+          }
+        });
+      } else {
+        callback(500, {
+          error: "There was a server side problem",
+        });
+      }
+    });
+  } else {
+    callback(400, {
+      error: "There was a problem in your request",
+    });
+  }
+};
+
+handler._token.verify = (id, phone, callback)=>{
+  data.read('tokens', id, (err, tokenData)=>{
+    if(!err && tokenData){
+      if(parseJSON(tokenData).phone === phone && parseJSON(tokenData).expires > Date.now()){
+        callback(true,{
+          message:'ok'
+        })
+      }else{
+        callback(false)
+      }
+    }
+    else{
+      callback(false)
+    }
+  })
+}
+
 
 module.exports = handler;
