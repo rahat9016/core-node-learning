@@ -1,9 +1,28 @@
 {
-  "scripts": {
-    "start": "NODE_ENV=staging nodemon index.js",
-    "production": "NODE_ENV=production nodemon index.js"
+  "name": "",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
   },
-  "devDependencies": {
-    "nodemon": "^2.0.7"
+  "scripts": {
+    "start": "nodemon index",
+    "production": "NODE_ENV=production nodemon index",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rahat9016/core-node-learning.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rahat9016/core-node-learning/issues"
+  },
+  "homepage": "https://github.com/rahat9016/core-node-learning#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "nodemon": "^2.0.9"
   }
 }

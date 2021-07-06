@@ -1,21 +1,17 @@
-const http  = require('http');
-const { handleReqRes } = require('./helpers/handleReqRes');
-const environment = require('./helpers/environments')
-const {sendTwilioSms} = require('./helpers/notification')
+const server = require('./lib/server')
+const workers = require('./lib/worker')
+
+
 const app ={};
-const sms = 'Hi\' Rahat how are you. already you learn Twilio...' 
-// sendTwilioSms('01319091017', sms, (err)=>{
-//     console.log('error',err)
-// })
 
-app.createServer =()=>{
-    const server = http.createServer(app.handleReqRes)
-    server.listen(environment.port,()=>{
-        console.log(`server run in ${environment.port}`);
-    })
+app.init = ()=>{
+    //start the server 
+    server.init()
+    
+    //start the workers
+    workers.init()
 }
-app.handleReqRes = handleReqRes;
 
+app.init()
 
-
-app.createServer()
+module.exports = app
